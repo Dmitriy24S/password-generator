@@ -3,22 +3,104 @@ import iconArrowRight from './assets/images/icon-arrow-right.svg'
 import iconCopy from './assets/images/icon-copy.svg'
 
 function App() {
-  const [charLength, setCharLength] = useState<number>(10)
+  const [passwordLength, setPasswordLength] = useState<number>(10)
   const [includeUppercase, setIncludeUppercase] = useState(false)
   const [includeLowercase, setIncludeLowercase] = useState(true)
   const [includeNumbers, setIncludeNumbers] = useState(true)
   const [includeSymbols, setIncludeSymbols] = useState(false)
   const [password, setPassword] = useState('P4$5W0rD!')
-  const [passwordStrenght, setpasswordStrenght] = useState('')
-  const [optionsCount, setOptionsCount] = useState(2)
+  const [passwordStrenght, setpasswordStrenght] = useState('') // strength message
+  const [optionsCount, setOptionsCount] = useState(2) // keep track to update strength message + style
+  const uppercaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  const lowercaseLetters = 'abcdefghijklmnopqrstuvwxyz'
+  const numbers = '0123456789'
+  const symbols = '!@#$%&*_+'
+  let allowedOptions: string[] = []
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     console.log('sumit', e.target)
+    generatePassword()
+  }
+
+  const getRandomCharacter = (string: string) => {
+    const randomNumber = Math.floor(Math.random() * string.length)
+    console.log({ randomNumber })
+    console.log('generated:', string[randomNumber]) // e.g.: generated: V
+    return string[randomNumber]
+  }
+
+  // Generate string of all allowed characters from selected options (checkboxes)
+  const generateAllowedCharactersString = () => {
+    console.log('generating allowed characters string')
+    if (includeUppercase) {
+      allowedOptions.push(uppercaseLetters)
+    } else {
+      allowedOptions.filter((option: string) => option !== uppercaseLetters)
+    }
+    if (includeLowercase) {
+      allowedOptions.push(lowercaseLetters)
+    } else {
+      allowedOptions.filter((option: string) => option !== lowercaseLetters)
+    }
+    if (includeNumbers) {
+      allowedOptions.push(numbers)
+    } else {
+      allowedOptions.filter((option: string) => option !== numbers)
+    }
+    if (includeSymbols) {
+      allowedOptions.push(symbols)
+    } else {
+      allowedOptions.filter((option: string) => option !== symbols)
+    }
   }
 
   const generatePassword = () => {
-    // TODO: logic
+    // exit if none of options are selected
+    if (!includeUppercase && !includeLowercase && !includeNumbers && !includeSymbols) {
+      console.log('please check atleast 1')
+      return
+    }
+
+    console.log('generating password...')
+    generateAllowedCharactersString() // generate string of all allowed characters from selected options (checkboxes)
+
+    let tempPassword = ''
+
+    for (let index = 0; index < passwordLength; index++) {
+      // shuffle all allowed characters string
+      const shuffledAllowedOptionsString = allowedOptions
+        .join('')
+        .split('')
+        .sort(function () {
+          return 0.5 - Math.random()
+        })
+        .join('')
+      console.log({ shuffledAllowedOptionsString }) // e.g. 'MT5B8CYV_+*W@%PROF0K9XI!Z2DUJ7L34&HS#1$QENAG6'
+
+      tempPassword += getRandomCharacter(shuffledAllowedOptionsString) // add random character
+    }
+    console.log({ tempPassword })
+
+    // If temp password does not include symbol - (failed to randomly put symbol from shuffledAllowedOptionsString) // TODO: refactor?
+    if (includeSymbols) {
+      if (![...symbols].some((element) => tempPassword.includes(element))) {
+        console.log('no symbols in password')
+        const randomIndexForPasswordLetter = Math.floor(
+          Math.random() * tempPassword.length
+        )
+        const randomIndexForSymbol = Math.floor(Math.random() * symbols.length)
+        const randomSymbol = symbols[randomIndexForSymbol]
+        // replace random letter with random symbol:
+        tempPassword =
+          tempPassword.substring(0, randomIndexForPasswordLetter) +
+          randomSymbol +
+          tempPassword.substring(randomIndexForPasswordLetter + 1)
+      }
+    }
+    console.log({ tempPassword })
+    console.log('length:', tempPassword.length) // length: 10
+    setPassword(tempPassword)
   }
 
   // Check selected password strength
@@ -33,6 +115,7 @@ function App() {
       setOptionsCount(count)
       console.log({ count })
 
+      // Set password strength status message:
       switch (count) {
         case 0:
           setpasswordStrenght('SELECT AT LEAST 1')
@@ -53,6 +136,7 @@ function App() {
           break
       }
     }
+
     checkPasswordStrenght()
   }, [includeUppercase, includeLowercase, includeNumbers, includeSymbols])
 
@@ -100,18 +184,18 @@ function App() {
         <div className='options flex flex-col items-start p-4 bg-slate-800 gap-4'>
           <div className='flex justify-between items-center w-full'>
             <label htmlFor='length-slider'>Character Length</label>
-            <span className='text-green-400 text-2xl'>{charLength}</span>
+            <span className='text-green-400 text-2xl'>{passwordLength}</span>
           </div>
           <input
             type='range'
             name='length slider'
             id='length-slider'
             className='w-full'
-            value={charLength}
+            value={passwordLength}
             min={10}
             max={20}
             step={1}
-            onChange={(e) => setCharLength(Number(e.target.value))}
+            onChange={(e) => setPasswordLength(Number(e.target.value))}
           />
           <div className='flex gap-5'>
             <input
