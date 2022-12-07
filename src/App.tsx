@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react'
 import iconArrowRight from './assets/images/icon-arrow-right.svg'
 import iconCopy from './assets/images/icon-copy.svg'
+import './checkbox.css'
 
 function App() {
   const [passwordLength, setPasswordLength] = useState<number>(10)
@@ -156,7 +157,7 @@ function App() {
         return 'bg-yellow-400 border-transparent'
         break
       case 4:
-        return 'bg-green-400 border-transparent'
+        return 'bg-[#a4ffaf] border-transparent'
         break
       default:
         break
@@ -164,114 +165,150 @@ function App() {
   }
 
   return (
-    <div className='App w-full max-w-[450px] mx-auto'>
-      <h1 className='text-2xl'>Password Generator</h1>
+    <div className='App flex place-items-center min-h-screen min-w-full bg-gradient-to-b from-[#14131b] to-[#08070b] text-[#e6e5ea]'>
+      <div className='generator w-full max-w-[400px] sm:max-w-[550px] mx-auto'>
+        <h1 className='text-2xl'>Password Generator</h1>
 
-      <form className='flex flex-col gap-8 mt-8' onSubmit={handleSubmit}>
-        <div className='input relative'>
-          <div
-            className={[
-              'w-full bg-slate-800 p-4 text-2xl text-left break-words h-auto pr-12',
-              password === 'P4$5W0rD!' ? 'text-stone-400' : 'text-white'
-            ].join(' ')}
-          >
-            {password}
-          </div>
-          <button type='button' className='absolute top-2 right-0'>
-            <img src={iconCopy} alt='copy password' />
-          </button>
-        </div>
-        <div className='options flex flex-col items-start p-4 bg-slate-800 gap-4'>
-          <div className='flex justify-between items-center w-full'>
-            <label htmlFor='length-slider'>Character Length</label>
-            <span className='text-green-400 text-2xl'>{passwordLength}</span>
-          </div>
-          <input
-            type='range'
-            name='length slider'
-            id='length-slider'
-            className='w-full'
-            value={passwordLength}
-            min={10}
-            max={20}
-            step={1}
-            onChange={(e) => setPasswordLength(Number(e.target.value))}
-          />
-          <div className='flex gap-5'>
-            <input
-              type='checkbox'
-              name='uppercase'
-              id='uppercase-checkbox'
-              checked={includeUppercase}
-              onChange={(e) => {
-                console.log('clicked:', e.target.name)
-                setIncludeUppercase((prev) => !prev)
-              }}
-            />
-            <label htmlFor='uppercase-checkbox'>Include uppercase letters</label>
-          </div>
-          <div className='flex gap-5'>
-            <input
-              type='checkbox'
-              name='lowercase'
-              id='lowercase-checkbox'
-              checked={includeLowercase}
-              onChange={(e) => {
-                console.log('clicked:', e.target.name)
-                setIncludeLowercase((prev) => !prev)
-              }}
-            />
-            <label htmlFor='lowercase-checkbox'>Include lowercase letters</label>
-          </div>
-          <div className='flex gap-5'>
-            <input
-              type='checkbox'
-              name='numbers'
-              id='numbers-checkbox'
-              checked={includeNumbers}
-              onChange={(e) => {
-                console.log('clicked:', e.target.name)
-                setIncludeNumbers((prev) => !prev)
-              }}
-            />
-            <label htmlFor='numbers-checkbox'>Include numbers</label>
-          </div>
-          <div className='flex gap-5'>
-            <input
-              type='checkbox'
-              name='symbols'
-              id='symbols-checkbox'
-              checked={includeSymbols}
-              onChange={(e) => {
-                console.log('clicked:', e.target.name)
-                setIncludeSymbols((prev) => !prev)
-              }}
-            />
-            <label htmlFor='symbols-checkbox'>Include symbols</label>
-          </div>
-          <div className='strength flex justify-between w-full items-center bg-neutral-800 p-4 flex-col gap-4 sm:flex-row'>
-            <span className='uppercase text-stone-400'>Strength</span>
-            <div className='strength-indicator flex gap-2 items-center'>
-              <div className='uppercase mr-2'>{passwordStrenght}</div>
-              {[...Array(4)].map((_el, index) => (
-                <div
-                  className={[
-                    'h-8 w-2 block border',
-                    index < optionsCount ? strenghtClasses() : ''
-                  ].join(' ')}
-                ></div>
-              ))}
+        <form className='flex flex-col gap-4 sm:gap-6 mt-8' onSubmit={handleSubmit}>
+          {/* Password */}
+          <div className='input relative'>
+            <div
+              className={[
+                'w-full bg-[#24232c] p-4 sm:p-8 sm:py-5 text-2xl text-left break-words h-auto pr-12',
+                password === 'P4$5W0rD!' ? 'text-stone-400' : 'text-white'
+              ].join(' ')}
+            >
+              {password}
             </div>
+            <button
+              type='button'
+              className='absolute top-2/4 -translate-y-2/4 right-4 sm:right-8'
+            >
+              {/* // TODO: svg hover:bg-[#80ff8f] focus-visible:bg-[#80ff8f] */}
+              <img src={iconCopy} alt='copy password' />
+            </button>
           </div>
-        </div>
-        <button
-          type='submit'
-          className='bg-green-400 text-neutral-900 uppercase relative flex gap-4 items-center justify-center py-3'
-        >
-          Generate
-          <img src={iconArrowRight} alt='' />
-        </button>
-      </form>
+          {/* Options */}
+          <div className='options flex flex-col items-start p-4 sm:p-8 bg-[#24232c] gap-8 '>
+            {/* Slider */}
+            <div className='slider w-full flex flex-col gap-4'>
+              <div className='flex justify-between items-center w-full'>
+                <label htmlFor='length-slider' className='text-xl font-bold'>
+                  Character Length
+                </label>
+                <span className='text-[#a4ffaf] text-2xl sm:text-3xl'>
+                  {passwordLength}
+                </span>
+              </div>
+              <input
+                type='range'
+                name='length slider'
+                id='length-slider'
+                className='w-full'
+                value={passwordLength}
+                min={10}
+                max={20}
+                step={1}
+                onChange={(e) => setPasswordLength(Number(e.target.value))}
+              />
+            </div>
+            {/* Checkboxes */}
+            <div className='options flex flex-col gap-4 text-left'>
+              <div className='flex gap-5 relative items-center'>
+                <input
+                  type='checkbox'
+                  name='uppercase'
+                  id='uppercase-checkbox'
+                  checked={includeUppercase}
+                  onChange={(e) => {
+                    console.log('clicked:', e.target.name)
+                    setIncludeUppercase((prev) => !prev)
+                  }}
+                />
+                <span className='checkmark pointer-events-none absolute'></span>
+                <label htmlFor='uppercase-checkbox' className='cursor-pointer'>
+                  Include uppercase letters
+                </label>
+              </div>
+              <div className='flex gap-5 relative items-center'>
+                <input
+                  type='checkbox'
+                  name='lowercase'
+                  id='lowercase-checkbox'
+                  checked={includeLowercase}
+                  onChange={(e) => {
+                    console.log('clicked:', e.target.name)
+                    setIncludeLowercase((prev) => !prev)
+                  }}
+                />
+                <span className='checkmark pointer-events-none absolute'></span>
+                <label htmlFor='lowercase-checkbox' className='cursor-pointer '>
+                  Include lowercase letters
+                </label>
+              </div>
+              <div className='flex gap-5 relative items-center'>
+                <input
+                  type='checkbox'
+                  name='numbers'
+                  id='numbers-checkbox'
+                  checked={includeNumbers}
+                  onChange={(e) => {
+                    console.log('clicked:', e.target.name)
+                    setIncludeNumbers((prev) => !prev)
+                  }}
+                />
+                <span className='checkmark pointer-events-none absolute'></span>
+                <label htmlFor='numbers-checkbox' className='cursor-pointer'>
+                  Include numbers
+                </label>
+              </div>
+              <div className='flex gap-5 relative items-center cursor-pointer'>
+                <input
+                  type='checkbox'
+                  name='symbols'
+                  id='symbols-checkbox'
+                  checked={includeSymbols}
+                  onChange={(e) => {
+                    console.log('clicked:', e.target.name)
+                    setIncludeSymbols((prev) => !prev)
+                  }}
+                />
+                <span className='checkmark pointer-events-none absolute'></span>
+                <label htmlFor='symbols-checkbox' className='cursor-pointer'>
+                  Include symbols
+                </label>
+              </div>
+            </div>
+            {/* Strength */}
+            <div className='strength flex justify-between w-full items-center bg-[#18171f] p-4 px-6 flex-col gap-4 sm:flex-row text-center'>
+              <span className='uppercase text-[#817d92]'>Strength</span>
+              <div className='strength-indicator flex gap-2 items-center'>
+                <div className='uppercase mr-2 font-bold text-xl'>{passwordStrenght}</div>
+                {[...Array(4)].map((_el, index) => (
+                  <div
+                    className={[
+                      'h-8 w-2 block border',
+                      index < optionsCount ? strenghtClasses() : ''
+                    ].join(' ')}
+                  ></div>
+                ))}
+              </div>
+            </div>
+            {/* Generate button */}
+            <button
+              type='submit'
+              className='generate-btn bg-[#a4ffaf] text-[#24232c] uppercase relative flex gap-4 items-center justify-center p-4 w-full text-lg font-bold group hover:bg-[#80ff8f] focus-visible:bg-[#80ff8f] transition-colors'
+            >
+              Generate
+              <img
+                src={iconArrowRight}
+                alt='arrow pointing right'
+                className='group-hover:translate-x-1.5 group-focus:translate-x-1.5 transition-transform'
+              />
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
