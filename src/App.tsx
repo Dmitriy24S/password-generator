@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from 'react'
 import iconArrowRight from './assets/images/icon-arrow-right.svg'
 import iconCopy from './assets/images/icon-copy.svg'
 import './checkbox.css'
+import './slider.css'
 
 function App() {
   const [passwordLength, setPasswordLength] = useState<number>(10)
@@ -164,6 +165,17 @@ function App() {
     }
   }
 
+  // Update slider progress bar:
+  // ! updates with delay? visible overflwo with range input thumb:
+  // const [sliderProgress, setSliderProgress] = useState(50)
+  // useEffect(() => {
+  //   const tempSliderProgress = ((passwordLength - 10) / (20 - 10)) * 100
+  //   console.log({ tempSliderProgress }) // 0% 50% 100%
+  //   setSliderProgress(tempSliderProgress)
+  // }, [passwordLength])
+  // ! better?:
+  const sliderProgress = ((passwordLength - 10) / (20 - 10)) * 100
+
   return (
     <div className='App flex place-items-center min-h-screen min-w-full bg-gradient-to-b from-[#14131b] to-[#08070b] text-[#e6e5ea]'>
       <div className='generator w-full max-w-[400px] sm:max-w-[550px] mx-auto'>
@@ -189,9 +201,8 @@ function App() {
             </button>
           </div>
           {/* Options */}
-          <div className='options flex flex-col items-start p-4 sm:p-8 bg-[#24232c] gap-8 '>
-            {/* Slider */}
-            <div className='slider w-full flex flex-col gap-4'>
+          <div className='flex flex-col items-start p-4 sm:p-8 bg-[#24232c] gap-8 '>
+            <div className='character length w-full flex flex-col gap-5'>
               <div className='flex justify-between items-center w-full'>
                 <label htmlFor='length-slider' className='text-xl font-bold'>
                   Character Length
@@ -200,17 +211,24 @@ function App() {
                   {passwordLength}
                 </span>
               </div>
-              <input
-                type='range'
-                name='length slider'
-                id='length-slider'
-                className='w-full'
-                value={passwordLength}
-                min={10}
-                max={20}
-                step={1}
-                onChange={(e) => setPasswordLength(Number(e.target.value))}
-              />
+              {/* Slider */}
+              <div className='slider-container relative flex items-center group'>
+                <input
+                  type='range'
+                  name='length slider'
+                  id='length-slider'
+                  className='w-full appearance-none h-2 bg-[#18171f] cursor-pointer'
+                  value={passwordLength}
+                  min={10}
+                  max={20}
+                  step={1}
+                  onChange={(e) => setPasswordLength(Number(e.target.value))}
+                />
+                <div
+                  className='slider-progress-bar absolute top-0 bottom-0 left-0 h-2 my-auto w-full bg-[#a4ffaf] pointer-events-none group-hover:bg-[#80ff8f]'
+                  style={{ width: sliderProgress + '%' }}
+                />
+              </div>
             </div>
             {/* Checkboxes */}
             <div className='options flex flex-col gap-4 text-left'>
