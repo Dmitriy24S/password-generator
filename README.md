@@ -1,6 +1,6 @@
 # Password Generator
 
-![Design preview for the Password Generator](./design/design-preview.png)
+![Design preview for the Password Generator](./design-preview/design-preview.png)
 
 ## Welcome! 👋
 
