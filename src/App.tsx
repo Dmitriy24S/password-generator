@@ -1,6 +1,8 @@
 import { FormEvent, useEffect, useState } from 'react'
+import CheckSVG from './assets/images/CheckSVG'
+import CopySVG from './assets/images/CopySVG'
 import iconArrowRight from './assets/images/icon-arrow-right.svg'
-import iconCopy from './assets/images/icon-copy.svg'
+// import iconCopy from './assets/images/icon-copy.svg'
 import './checkbox.css'
 import './slider.css'
 
@@ -10,7 +12,8 @@ function App() {
   const [includeLowercase, setIncludeLowercase] = useState(true)
   const [includeNumbers, setIncludeNumbers] = useState(true)
   const [includeSymbols, setIncludeSymbols] = useState(false)
-  const [password, setPassword] = useState('P4$5W0rD!')
+  // const [password, setPassword] = useState('P4$5W0rD!')
+  const [password, setPassword] = useState('')
   const [passwordStrenght, setpasswordStrenght] = useState('') // strength message
   const [optionsCount, setOptionsCount] = useState(2) // keep track to update strength message + style
   const uppercaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -63,6 +66,8 @@ function App() {
       console.log('please check atleast 1')
       return
     }
+    // reset copied status
+    setIsCopied(false)
 
     console.log('generating password...')
     generateAllowedCharactersString() // generate string of all allowed characters from selected options (checkboxes)
@@ -166,38 +171,83 @@ function App() {
   }
 
   // Update slider progress bar:
-  // ! updates with delay? visible overflwo with range input thumb:
+  // ! v1: updates with delay? visible overflwo with range input thumb:
   // const [sliderProgress, setSliderProgress] = useState(50)
   // useEffect(() => {
   //   const tempSliderProgress = ((passwordLength - 10) / (20 - 10)) * 100
   //   console.log({ tempSliderProgress }) // 0% 50% 100%
   //   setSliderProgress(tempSliderProgress)
   // }, [passwordLength])
-  // ! better?:
+  // ! v2: better?:
   const sliderProgress = ((passwordLength - 10) / (20 - 10)) * 100
+
+  // Copy generated password:
+  const [isCopied, setIsCopied] = useState(false)
+
+  // const copyToClipboard = async () =>
+  //   await navigator.clipboard.writeText(password).then(
+  //     function () {
+  //       console.log('Copy to clipboard successfully.')
+  //     },
+  //     function () {
+  //       console.log('Copy to clipboard unsuccessfully.')
+  //     }
+  //   )
+
+  const copyPasswordToClipboard = () => {
+    if (password) {
+      navigator.clipboard.writeText(password)
+      // copyToClipboard()
+      setIsCopied(true)
+    }
+  }
+  // Reset Copy/Checkmark SVG after 1.5s timeout:
+  useEffect(() => {
+    let timeoutId: number
+    if (isCopied) {
+      timeoutId = setTimeout(() => {
+        setIsCopied(false)
+      }, 1500)
+    }
+
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [isCopied])
 
   return (
     <div className='App flex place-items-center min-h-screen min-w-full bg-gradient-to-b from-[#14131b] to-[#08070b] text-[#e6e5ea]'>
       <div className='generator w-full max-w-[400px] sm:max-w-[550px] mx-auto'>
         <h1 className='text-2xl'>Password Generator</h1>
 
-        <form className='flex flex-col gap-4 sm:gap-6 mt-8' onSubmit={handleSubmit}>
+        <form className='flex flex-col gap-4 sm:gap-6 mt-6' onSubmit={handleSubmit}>
           {/* Password */}
           <div className='input relative'>
-            <div
+            <input
+              type='text'
+              placeholder='P4$5W0rD!'
+              className={[
+                'w-full bg-[#24232c] p-4 sm:p-8 sm:py-5 text-2xl text-left break-words h-auto pr-12 text-white placeholder:text-[#e6e5ea]/25 '
+              ].join(' ')}
+              value={password}
+              readOnly
+            />
+            {/* <div
               className={[
                 'w-full bg-[#24232c] p-4 sm:p-8 sm:py-5 text-2xl text-left break-words h-auto pr-12',
                 password === 'P4$5W0rD!' ? 'text-stone-400' : 'text-white'
               ].join(' ')}
             >
               {password}
-            </div>
+            </div> */}
             <button
               type='button'
-              className='absolute top-2/4 -translate-y-2/4 right-4 sm:right-8'
+              className='absolute top-2/4 -translate-y-2/4 right-4 sm:right-8 text-[#A4FFAF] hover:text-[#80ff8f] focus-visible:text-[#80ff8f]'
+              onClick={copyPasswordToClipboard}
             >
-              {/* // TODO: svg hover:bg-[#80ff8f] focus-visible:bg-[#80ff8f] */}
-              <img src={iconCopy} alt='copy password' />
+              {/* <img src={iconCopy} alt='copy password' /> */}
+              {/* <CopySVG /> */}
+              {isCopied ? <CheckSVG /> : <CopySVG />}
             </button>
           </div>
           {/* Options */}

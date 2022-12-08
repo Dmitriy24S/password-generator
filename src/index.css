@@ -35,6 +35,15 @@ input:focus-visible {
   outline-offset: 4px;
 }
 
+input[type='text']:disabled {
+  /* -webkit-text-fill-color: #880000; */
+  /* -webkit-text-fill-color: white; */
+  /* -webkit-text-fill-color: currentcolor; */
+  /* -webkit-appearance: none; */
+  /* opacity: 1; */
+  /* color: white; */
+}
+
 /* Vite defaults: */
 #root {
   /* max-width: 1280px; */
