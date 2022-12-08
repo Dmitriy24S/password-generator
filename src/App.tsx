@@ -216,9 +216,9 @@ function App() {
   }, [isCopied])
 
   return (
-    <div className='App flex place-items-center min-h-screen min-w-full bg-gradient-to-b from-[#14131b] to-[#08070b] text-[#e6e5ea]'>
-      <div className='generator w-full max-w-[400px] sm:max-w-[550px] mx-auto'>
-        <h1 className='text-2xl'>Password Generator</h1>
+    <div className='App flex sm:place-items-center min-h-screen min-w-full bg-gradient-to-b from-[#14131b] to-[#08070b] text-[#e6e5ea]'>
+      <div className='generator w-full max-w-[400px] sm:max-w-[550px] mx-auto text-center'>
+        <h1 className='text-xl sm:text-2xl text-[#817d92]'>Password Generator</h1>
 
         <form className='flex flex-col gap-4 sm:gap-6 mt-6' onSubmit={handleSubmit}>
           {/* Password */}
