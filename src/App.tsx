@@ -348,18 +348,25 @@ function App() {
               </div>
             </div>
             {/* Strength */}
-            <div className='strength flex justify-between w-full items-center bg-[#18171f] p-4 px-6 flex-col gap-4 sm:flex-row text-center'>
-              <span className='uppercase text-[#817d92]'>Strength</span>
-              <div className='strength-indicator flex gap-2 items-center'>
-                <div className='uppercase mr-2 font-bold text-xl'>{passwordStrenght}</div>
-                {[...Array(4)].map((_el, index) => (
-                  <div
-                    className={[
-                      'h-8 w-2 block border',
-                      index < optionsCount ? strenghtClasses() : ''
-                    ].join(' ')}
-                  ></div>
-                ))}
+            <div className='strength flex justify-between w-full items-center bg-[#18171f] p-4 px-6 flex-col gap-2.5 sm:gap-4 sm:flex-row text-center'>
+              <p className='uppercase text-[#817d92]'>Strength</p>
+              <div className='strength-indicator flex gap-2'>
+                <p className='uppercase mr-2 font-bold text-xl flex'>
+                  {passwordStrenght}
+                </p>
+                {optionsCount > 0 && (
+                  <div className='flex gap-1 items-center'>
+                    {[...Array(4)].map((_el, index) => (
+                      <div
+                        key={index}
+                        className={[
+                          'h-full w-2 border',
+                          index < optionsCount ? strenghtClasses() : ''
+                        ].join(' ')}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
             {/* Generate button */}
