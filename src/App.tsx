@@ -371,7 +371,7 @@ function App() {
               <img
                 src={iconArrowRight}
                 alt='arrow pointing right'
-                className='group-hover:translate-x-1.5 group-focus:translate-x-1.5 transition-transform'
+                className='group-hover:translate-x-1.5 group-focus-visible:translate-x-1.5 transition-transform'
               />
             </button>
           </div>
