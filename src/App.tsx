@@ -152,19 +152,14 @@ function App() {
     switch (optionsCount) {
       case 0:
         return 'bg-neutral-800 border-white'
-        break
       case 1:
         return 'bg-red-500 border-transparent'
-        break
       case 2:
         return 'bg-orange-400 border-transparent'
-        break
       case 3:
         return 'bg-yellow-400 border-transparent'
-        break
       case 4:
-        return 'bg-[#a4ffaf] border-transparent'
-        break
+        return 'bg-green-neon-100 border-transparent'
       default:
         break
     }
@@ -216,9 +211,14 @@ function App() {
   }, [isCopied])
 
   return (
-    <div className='App flex sm:place-items-center min-h-screen min-w-full bg-gradient-to-b from-[#14131b] to-[#08070b] text-[#e6e5ea]'>
+    <div className='App flex sm:place-items-center min-h-screen min-w-full bg-gradient-to-b from-[#14131b] to-[#08070b] text-white-off p-4'>
       <div className='generator w-full max-w-[400px] sm:max-w-[550px] mx-auto text-center'>
-        <h1 className='text-xl sm:text-2xl text-[#817d92]'>Password Generator</h1>
+        <h1
+          className='text-xl sm:text-2xl text-gray cursor-pointer'
+          onClick={() => location.reload()}
+        >
+          Password Generator
+        </h1>
 
         <form className='flex flex-col gap-4 sm:gap-6 mt-6' onSubmit={handleSubmit}>
           {/* Password */}
@@ -227,14 +227,14 @@ function App() {
               type='text'
               placeholder='P4$5W0rD!'
               className={[
-                'w-full bg-[#24232c] p-4 sm:p-8 sm:py-5 text-2xl text-left break-words h-auto pr-12 text-white placeholder:text-[#e6e5ea]/25 '
+                'w-full bg-gray-medium p-4 sm:p-8 sm:py-5 text-base sm:text-2xl text-left break-words h-auto pr-10 text-white placeholder:text-white-off/25 focus:outline-none focus-visible:outline-none'
               ].join(' ')}
               value={password}
               readOnly
             />
             {/* <div
               className={[
-                'w-full bg-[#24232c] p-4 sm:p-8 sm:py-5 text-2xl text-left break-words h-auto pr-12',
+                'w-full bg-gray-medium p-4 sm:p-8 sm:py-5 text-2xl text-left break-words h-auto pr-12',
                 password === 'P4$5W0rD!' ? 'text-stone-400' : 'text-white'
               ].join(' ')}
             >
@@ -242,7 +242,7 @@ function App() {
             </div> */}
             <button
               type='button'
-              className='absolute top-2/4 -translate-y-2/4 right-4 sm:right-8 text-[#A4FFAF] hover:text-[#80ff8f] focus-visible:text-[#80ff8f]'
+              className='absolute top-2/4 -translate-y-2/4 right-4 sm:right-8 text-green-neon-100 hover:text-green-neon-200 focus-visible:text-green-neon-200'
               onClick={copyPasswordToClipboard}
             >
               {/* <img src={iconCopy} alt='copy password' /> */}
@@ -251,13 +251,13 @@ function App() {
             </button>
           </div>
           {/* Options */}
-          <div className='flex flex-col items-start p-4 sm:p-8 bg-[#24232c] gap-8 '>
+          <div className='flex flex-col items-start p-4 sm:p-8 bg-gray-medium gap-8 '>
             <div className='character length w-full flex flex-col gap-5'>
               <div className='flex justify-between items-center w-full'>
-                <label htmlFor='length-slider' className='text-xl font-bold'>
+                <label htmlFor='length-slider' className='text-base sm:text-xl font-bold'>
                   Character Length
                 </label>
-                <span className='text-[#a4ffaf] text-2xl sm:text-3xl'>
+                <span className='text-green-neon-100 text-2xl sm:text-3xl'>
                   {passwordLength}
                 </span>
               </div>
@@ -267,7 +267,7 @@ function App() {
                   type='range'
                   name='length slider'
                   id='length-slider'
-                  className='w-full appearance-none h-2 bg-[#18171f] cursor-pointer'
+                  className='w-full appearance-none h-2 bg-gray-dark cursor-pointer'
                   value={passwordLength}
                   min={10}
                   max={20}
@@ -275,7 +275,7 @@ function App() {
                   onChange={(e) => setPasswordLength(Number(e.target.value))}
                 />
                 <div
-                  className='slider-progress-bar absolute top-0 bottom-0 left-0 h-2 my-auto w-full bg-[#a4ffaf] pointer-events-none group-hover:bg-[#80ff8f]'
+                  className='slider-progress-bar absolute top-0 bottom-0 left-0 h-2 my-auto w-full bg-green-neon-100 pointer-events-none group-hover:bg-green-neon-200'
                   style={{ width: sliderProgress + '%' }}
                 />
               </div>
@@ -293,7 +293,7 @@ function App() {
                     setIncludeUppercase((prev) => !prev)
                   }}
                 />
-                <span className='checkmark pointer-events-none absolute'></span>
+                <span className='checkmark pointer-events-none absolute' />
                 <label htmlFor='uppercase-checkbox' className='cursor-pointer'>
                   Include uppercase letters
                 </label>
@@ -309,7 +309,7 @@ function App() {
                     setIncludeLowercase((prev) => !prev)
                   }}
                 />
-                <span className='checkmark pointer-events-none absolute'></span>
+                <span className='checkmark pointer-events-none absolute' />
                 <label htmlFor='lowercase-checkbox' className='cursor-pointer '>
                   Include lowercase letters
                 </label>
@@ -325,7 +325,7 @@ function App() {
                     setIncludeNumbers((prev) => !prev)
                   }}
                 />
-                <span className='checkmark pointer-events-none absolute'></span>
+                <span className='checkmark pointer-events-none absolute' />
                 <label htmlFor='numbers-checkbox' className='cursor-pointer'>
                   Include numbers
                 </label>
@@ -341,15 +341,15 @@ function App() {
                     setIncludeSymbols((prev) => !prev)
                   }}
                 />
-                <span className='checkmark pointer-events-none absolute'></span>
+                <span className='checkmark pointer-events-none absolute' />
                 <label htmlFor='symbols-checkbox' className='cursor-pointer'>
                   Include symbols
                 </label>
               </div>
             </div>
             {/* Strength */}
-            <div className='strength flex justify-between w-full items-center bg-[#18171f] p-4 px-6 flex-col gap-2.5 sm:gap-4 sm:flex-row text-center'>
-              <p className='uppercase text-[#817d92]'>Strength</p>
+            <div className='strength flex justify-between w-full items-center bg-gray-dark p-4 px-6 flex-col gap-2.5 sm:gap-4 sm:flex-row text-center'>
+              <p className='uppercase text-gray'>Strength</p>
               <div className='strength-indicator flex gap-2'>
                 <p className='uppercase mr-2 font-bold text-xl flex'>
                   {passwordStrenght}
@@ -372,7 +372,7 @@ function App() {
             {/* Generate button */}
             <button
               type='submit'
-              className='generate-btn bg-[#a4ffaf] text-[#24232c] uppercase relative flex gap-4 items-center justify-center p-4 w-full text-lg font-bold group hover:bg-[#80ff8f] focus-visible:bg-[#80ff8f] transition-colors'
+              className='generate-btn bg-green-neon-100 text-gray-medium uppercase relative flex gap-4 items-center justify-center p-4 w-full text-lg font-bold group hover:bg-green-neon-200 focus-visible:bg-green-neon-200 transition-colors'
             >
               Generate
               <img
