@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CheckSVG from '../assets/images/CheckSVG'
 import CopySVG from '../assets/images/CopySVG'
+import Tooltip from './Tooltip'
 
 interface Props {
   password: string
@@ -60,19 +61,25 @@ const PasswordDisplay = (props: Props) => {
       className={[
         'w-full bg-gray-medium p-4 sm:p-8 sm:py-5 text-2xl text-left break-words h-auto pr-12',
         password === 'P4$5W0rD!' ? 'text-stone-400' : 'text-white'
-      ].join(' ')}
-    >
+      ].join(' ')}>
       {password}
-    </div> */}
-      <button
-        type='button'
-        className='absolute z-50 top-2/4 -translate-y-2/4 right-4 sm:right-8 text-green-neon-100 hover:text-green-neon-200 focus-visible:text-green-neon-200'
-        onClick={copyPasswordToClipboard}
-      >
-        {/* <img src={iconCopy} alt='copy password' /> */}
-        {/* <CopySVG /> */}
-        {isCopied ? <CheckSVG /> : <CopySVG />}
-      </button>
+      </div> */}
+
+      {/* Button with tooltip */}
+      <div className='absolute z-50 top-2/4 -translate-y-2/4 right-4 sm:right-8'>
+        <Tooltip isCopied={isCopied} password={password}>
+          <button
+            type='button'
+            aria-label='copy password'
+            className='text-green-neon-100 hover:text-green-neon-200 focus-visible:text-green-neon-200'
+            onClick={copyPasswordToClipboard}
+          >
+            {/* <img src={iconCopy} alt='copy password' /> */}
+            {/* <CopySVG /> */}
+            {isCopied ? <CheckSVG /> : <CopySVG />}
+          </button>
+        </Tooltip>
+      </div>
     </div>
   )
 }
