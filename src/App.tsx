@@ -152,7 +152,7 @@ function App() {
       <div className='generator w-full max-w-[400px] sm:max-w-[550px] mx-auto text-center'>
         {/* Title / Header */}
         <h1
-          className='text-xl sm:text-2xl text-gray cursor-pointer'
+          className='text-xl sm:text-2xl text-gray cursor-pointer mx-auto w-fit'
           onClick={() => location.reload()}
         >
           Password Generator
