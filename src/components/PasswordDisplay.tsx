@@ -71,7 +71,7 @@ const PasswordDisplay = (props: Props) => {
           <button
             type='button'
             aria-label='copy password'
-            className='text-green-neon-100 hover:text-green-neon-200 focus-visible:text-green-neon-200'
+            className='text-green-neon-100 hover:text-green-neon-200 focus-visible:text-green-neon-200 peer'
             onClick={copyPasswordToClipboard}
           >
             {/* <img src={iconCopy} alt='copy password' /> */}

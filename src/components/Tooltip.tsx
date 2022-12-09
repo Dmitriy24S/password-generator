@@ -8,8 +8,9 @@ interface Props {
 
 const Tooltip = ({ children, isCopied, password }: Props) => (
   <div className='group tooltip-container relative flex items-center'>
+    {children}
     {/* Copy tooltip msg */}
-    <div className='tooltip absolute -top-7 right-0 bg-cyan-500 min-w-max  px-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-[visibility,opacity]'>
+    <div className='tooltip absolute -top-7 right-0 bg-cyan-500 min-w-max  px-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-[visibility,opacity] peer-focus-visible:visible peer-focus-visible:opacity-100'>
       {password ? 'Copy' : 'Generate password first'}
     </div>
     {/* Succesful copy tooltip msg */}
@@ -23,7 +24,6 @@ const Tooltip = ({ children, isCopied, password }: Props) => (
     >
       Copied
     </div>
-    {children}
   </div>
 )
 
