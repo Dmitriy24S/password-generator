@@ -56,6 +56,7 @@ const PasswordDisplay = (props: Props) => {
         ].join(' ')}
         value={password}
         readOnly
+        tabIndex={-1} // ignore readonly input on tab focus?
       />
       {/* <div
       className={[
