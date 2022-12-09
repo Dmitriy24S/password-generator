@@ -1,10 +1,9 @@
 import { FormEvent, useEffect, useState } from 'react'
-import CheckSVG from './assets/images/CheckSVG'
-import CopySVG from './assets/images/CopySVG'
-import iconArrowRight from './assets/images/icon-arrow-right.svg'
-// import iconCopy from './assets/images/icon-copy.svg'
-import './checkbox.css'
-import './slider.css'
+import ButtonPrimary from './components/ButtonPrimary'
+import Checkbox from './components/Checkbox/Checkbox'
+import PasswordDisplay from './components/PasswordDisplay'
+import RangeSlider from './components/RangeSlider/RangeSlider'
+import StrengthStatus from './components/StrengthStatus/StrengthStatus'
 
 function App() {
   const [passwordLength, setPasswordLength] = useState<number>(10)
@@ -14,13 +13,14 @@ function App() {
   const [includeSymbols, setIncludeSymbols] = useState(false)
   // const [password, setPassword] = useState('P4$5W0rD!')
   const [password, setPassword] = useState('')
-  const [passwordStrenght, setpasswordStrenght] = useState('') // strength message
+  const [passwordStrength, setPasswordStrength] = useState('') // strength message
   const [optionsCount, setOptionsCount] = useState(2) // keep track to update strength message + style
   const uppercaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   const lowercaseLetters = 'abcdefghijklmnopqrstuvwxyz'
   const numbers = '0123456789'
   const symbols = '!@#$%&*_+'
   let allowedOptions: string[] = []
+  const [isCopied, setIsCopied] = useState(false)
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -112,7 +112,7 @@ function App() {
 
   // Check selected password strength
   useEffect(() => {
-    const checkPasswordStrenght = () => {
+    const checkPasswordStrength = () => {
       let count = 0
       if (includeUppercase) count++
       if (includeLowercase) count++
@@ -125,262 +125,89 @@ function App() {
       // Set password strength status message:
       switch (count) {
         case 0:
-          setpasswordStrenght('SELECT AT LEAST 1')
+          setPasswordStrength('SELECT AT LEAST 1')
           break
         case 1:
-          setpasswordStrenght('TOO WEAK!')
+          setPasswordStrength('TOO WEAK!')
           break
         case 2:
-          setpasswordStrenght('WEAK')
+          setPasswordStrength('WEAK')
           break
         case 3:
-          setpasswordStrenght('MEDIUM')
+          setPasswordStrength('MEDIUM')
           break
         case 4:
-          setpasswordStrenght('STRONG')
+          setPasswordStrength('STRONG')
           break
         default:
           break
       }
     }
 
-    checkPasswordStrenght()
+    checkPasswordStrength()
   }, [includeUppercase, includeLowercase, includeNumbers, includeSymbols])
-
-  // Update password strength meter style:
-  const strenghtClasses = () => {
-    switch (optionsCount) {
-      case 0:
-        return 'bg-neutral-800 border-white'
-      case 1:
-        return 'bg-red-500 border-transparent'
-      case 2:
-        return 'bg-orange-400 border-transparent'
-      case 3:
-        return 'bg-yellow-400 border-transparent'
-      case 4:
-        return 'bg-green-neon-100 border-transparent'
-      default:
-        break
-    }
-  }
-
-  // Update slider progress bar:
-  // ! v1: updates with delay? visible overflwo with range input thumb:
-  // const [sliderProgress, setSliderProgress] = useState(50)
-  // useEffect(() => {
-  //   const tempSliderProgress = ((passwordLength - 10) / (20 - 10)) * 100
-  //   console.log({ tempSliderProgress }) // 0% 50% 100%
-  //   setSliderProgress(tempSliderProgress)
-  // }, [passwordLength])
-  // ! v2: better?:
-  const sliderProgress = ((passwordLength - 10) / (20 - 10)) * 100
-
-  // Copy generated password:
-  const [isCopied, setIsCopied] = useState(false)
-
-  // const copyToClipboard = async () =>
-  //   await navigator.clipboard.writeText(password).then(
-  //     function () {
-  //       console.log('Copy to clipboard successfully.')
-  //     },
-  //     function () {
-  //       console.log('Copy to clipboard unsuccessfully.')
-  //     }
-  //   )
-
-  const copyPasswordToClipboard = () => {
-    if (password) {
-      navigator.clipboard.writeText(password)
-      // copyToClipboard()
-      setIsCopied(true)
-    }
-  }
-  // Reset Copy/Checkmark SVG after 1.5s timeout:
-  useEffect(() => {
-    let timeoutId: number
-    if (isCopied) {
-      timeoutId = setTimeout(() => {
-        setIsCopied(false)
-      }, 1500)
-    }
-
-    return () => {
-      clearTimeout(timeoutId)
-    }
-  }, [isCopied])
 
   return (
     <div className='App flex sm:place-items-center min-h-screen min-w-full bg-gradient-to-b from-[#14131b] to-[#08070b] text-white-off p-4'>
       <div className='generator w-full max-w-[400px] sm:max-w-[550px] mx-auto text-center'>
+        {/* Title / Header */}
         <h1
           className='text-xl sm:text-2xl text-gray cursor-pointer'
           onClick={() => location.reload()}
         >
           Password Generator
         </h1>
-
-        <form className='flex flex-col gap-4 sm:gap-6 mt-6' onSubmit={handleSubmit}>
+        {/* Form */}
+        <form
+          className='flex flex-col gap-4 sm:gap-6 mt-3 sm:mt-6'
+          onSubmit={handleSubmit}
+        >
           {/* Password */}
-          <div className='input relative'>
-            <input
-              type='text'
-              placeholder='P4$5W0rD!'
-              className={[
-                'w-full bg-gray-medium p-4 sm:p-8 sm:py-5 text-base sm:text-2xl text-left break-words h-auto pr-10 text-white placeholder:text-white-off/25 focus:outline-none focus-visible:outline-none'
-              ].join(' ')}
-              value={password}
-              readOnly
-            />
-            {/* <div
-              className={[
-                'w-full bg-gray-medium p-4 sm:p-8 sm:py-5 text-2xl text-left break-words h-auto pr-12',
-                password === 'P4$5W0rD!' ? 'text-stone-400' : 'text-white'
-              ].join(' ')}
-            >
-              {password}
-            </div> */}
-            <button
-              type='button'
-              className='absolute top-2/4 -translate-y-2/4 right-4 sm:right-8 text-green-neon-100 hover:text-green-neon-200 focus-visible:text-green-neon-200'
-              onClick={copyPasswordToClipboard}
-            >
-              {/* <img src={iconCopy} alt='copy password' /> */}
-              {/* <CopySVG /> */}
-              {isCopied ? <CheckSVG /> : <CopySVG />}
-            </button>
-          </div>
+          <PasswordDisplay
+            password={password}
+            isCopied={isCopied}
+            setIsCopied={setIsCopied}
+          />
           {/* Options */}
-          <div className='flex flex-col items-start p-4 sm:p-8 bg-gray-medium gap-8 '>
-            <div className='character length w-full flex flex-col gap-5'>
-              <div className='flex justify-between items-center w-full'>
-                <label htmlFor='length-slider' className='text-base sm:text-xl font-bold'>
-                  Character Length
-                </label>
-                <span className='text-green-neon-100 text-2xl sm:text-3xl'>
-                  {passwordLength}
-                </span>
-              </div>
-              {/* Slider */}
-              <div className='slider-container relative flex items-center group'>
-                <input
-                  type='range'
-                  name='length slider'
-                  id='length-slider'
-                  className='w-full appearance-none h-2 bg-gray-dark cursor-pointer'
-                  value={passwordLength}
-                  min={10}
-                  max={20}
-                  step={1}
-                  onChange={(e) => setPasswordLength(Number(e.target.value))}
-                />
-                <div
-                  className='slider-progress-bar absolute top-0 bottom-0 left-0 h-2 my-auto w-full bg-green-neon-100 pointer-events-none group-hover:bg-green-neon-200'
-                  style={{ width: sliderProgress + '%' }}
-                />
-              </div>
-            </div>
+          <div className='options flex flex-col items-start p-4 sm:p-8 bg-gray-medium gap-8 '>
+            <RangeSlider
+              passwordLength={passwordLength}
+              setPasswordLength={setPasswordLength}
+            />
             {/* Checkboxes */}
-            <div className='options flex flex-col gap-4 text-left'>
-              <div className='flex gap-5 relative items-center'>
-                <input
-                  type='checkbox'
-                  name='uppercase'
-                  id='uppercase-checkbox'
-                  checked={includeUppercase}
-                  onChange={(e) => {
-                    console.log('clicked:', e.target.name)
-                    setIncludeUppercase((prev) => !prev)
-                  }}
-                />
-                <span className='checkmark pointer-events-none absolute' />
-                <label htmlFor='uppercase-checkbox' className='cursor-pointer'>
-                  Include uppercase letters
-                </label>
-              </div>
-              <div className='flex gap-5 relative items-center'>
-                <input
-                  type='checkbox'
-                  name='lowercase'
-                  id='lowercase-checkbox'
-                  checked={includeLowercase}
-                  onChange={(e) => {
-                    console.log('clicked:', e.target.name)
-                    setIncludeLowercase((prev) => !prev)
-                  }}
-                />
-                <span className='checkmark pointer-events-none absolute' />
-                <label htmlFor='lowercase-checkbox' className='cursor-pointer '>
-                  Include lowercase letters
-                </label>
-              </div>
-              <div className='flex gap-5 relative items-center'>
-                <input
-                  type='checkbox'
-                  name='numbers'
-                  id='numbers-checkbox'
-                  checked={includeNumbers}
-                  onChange={(e) => {
-                    console.log('clicked:', e.target.name)
-                    setIncludeNumbers((prev) => !prev)
-                  }}
-                />
-                <span className='checkmark pointer-events-none absolute' />
-                <label htmlFor='numbers-checkbox' className='cursor-pointer'>
-                  Include numbers
-                </label>
-              </div>
-              <div className='flex gap-5 relative items-center cursor-pointer'>
-                <input
-                  type='checkbox'
-                  name='symbols'
-                  id='symbols-checkbox'
-                  checked={includeSymbols}
-                  onChange={(e) => {
-                    console.log('clicked:', e.target.name)
-                    setIncludeSymbols((prev) => !prev)
-                  }}
-                />
-                <span className='checkmark pointer-events-none absolute' />
-                <label htmlFor='symbols-checkbox' className='cursor-pointer'>
-                  Include symbols
-                </label>
-              </div>
-            </div>
-            {/* Strength */}
-            <div className='strength flex justify-between w-full items-center bg-gray-dark p-4 px-6 flex-col gap-2.5 sm:gap-4 sm:flex-row text-center'>
-              <p className='uppercase text-gray'>Strength</p>
-              <div className='strength-indicator flex gap-2'>
-                <p className='uppercase mr-2 font-bold text-xl flex'>
-                  {passwordStrenght}
-                </p>
-                {optionsCount > 0 && (
-                  <div className='flex gap-1 items-center'>
-                    {[...Array(4)].map((_el, index) => (
-                      <div
-                        key={index}
-                        className={[
-                          'h-full w-2 border',
-                          index < optionsCount ? strenghtClasses() : ''
-                        ].join(' ')}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-            {/* Generate button */}
-            <button
-              type='submit'
-              className='generate-btn bg-green-neon-100 text-gray-medium uppercase relative flex gap-4 items-center justify-center p-4 w-full text-lg font-bold group hover:bg-green-neon-200 focus-visible:bg-green-neon-200 transition-colors'
-            >
-              Generate
-              <img
-                src={iconArrowRight}
-                alt='arrow pointing right'
-                className='group-hover:translate-x-1.5 group-focus-visible:translate-x-1.5 transition-transform'
+            <div className='checkboxes flex flex-col gap-4 text-left'>
+              <Checkbox
+                name='uppercase'
+                label='Include uppercase letters'
+                checked={includeUppercase}
+                onChange={(e) => setIncludeUppercase((prev) => !prev)}
               />
-            </button>
+              <Checkbox
+                name='lowercase'
+                label='Include lowercase letters'
+                checked={includeLowercase}
+                onChange={(e) => setIncludeLowercase((prev) => !prev)}
+              />
+              <Checkbox
+                name='numbers'
+                label='Include numbers'
+                checked={includeNumbers}
+                onChange={(e) => setIncludeNumbers((prev) => !prev)}
+              />
+              <Checkbox
+                name='symbols'
+                label='Include symbols'
+                checked={includeSymbols}
+                onChange={(e) => setIncludeSymbols((prev) => !prev)}
+              />
+            </div>
+            {/* Password Strength */}
+            <StrengthStatus
+              optionsCount={optionsCount}
+              passwordStrength={passwordStrength}
+            />
+            {/* Generate button */}
+            <ButtonPrimary>Generate</ButtonPrimary>
           </div>
         </form>
       </div>
