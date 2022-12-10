@@ -35,8 +35,10 @@ const PasswordDisplay = (props: Props) => {
   // Reset Copy/Checkmark SVG after 1.5s timeout:
   useEffect(() => {
     let timeoutId: number
+    // let timeoutId: NodeJS.Timeout | null = null;
     if (isCopied) {
-      timeoutId = setTimeout(() => {
+      // timeoutId = +global.setTimeout(() => {
+      timeoutId = window.setTimeout(() => {
         setIsCopied(false)
       }, 1500)
     }
