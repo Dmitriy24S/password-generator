@@ -1,5 +1,23 @@
 import React from 'react'
 
+// Update password strength meter style:
+export const strengthClasses = (optionsCount: number) => {
+  switch (optionsCount) {
+    case 0:
+      return 'bg-neutral-800 border-white'
+    case 1:
+      return 'bg-red-500 border-transparent'
+    case 2:
+      return 'bg-orange-400 border-transparent'
+    case 3:
+      return 'bg-yellow-400 border-transparent'
+    case 4:
+      return 'bg-green-neon-100 border-transparent'
+    default:
+      return ''
+  }
+}
+
 interface Props {
   optionsCount: number
   passwordStrength: string
@@ -7,24 +25,6 @@ interface Props {
 
 const StrengthStatus = (props: Props) => {
   const { optionsCount, passwordStrength } = props
-
-  // Update password strength meter style:
-  const strengthClasses = () => {
-    switch (optionsCount) {
-      case 0:
-        return 'bg-neutral-800 border-white'
-      case 1:
-        return 'bg-red-500 border-transparent'
-      case 2:
-        return 'bg-orange-400 border-transparent'
-      case 3:
-        return 'bg-yellow-400 border-transparent'
-      case 4:
-        return 'bg-green-neon-100 border-transparent'
-      default:
-        break
-    }
-  }
 
   return (
     <div className='strength flex justify-between w-full items-center bg-gray-dark p-4 px-6 flex-col gap-2.5 sm:gap-4 sm:flex-row text-center'>
@@ -38,7 +38,7 @@ const StrengthStatus = (props: Props) => {
                 key={index}
                 className={[
                   'h-full w-2 border',
-                  index < optionsCount ? strengthClasses() : ''
+                  index < optionsCount ? strengthClasses(optionsCount) : ''
                 ].join(' ')}
               />
             ))}

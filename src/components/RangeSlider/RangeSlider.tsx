@@ -27,7 +27,10 @@ const RangeSlider = (props: Props) => {
           <label htmlFor='length-slider' className='text-base sm:text-xl font-bold'>
             Character Length
           </label>
-          <span className='text-green-neon-100 text-2xl sm:text-3xl'>
+          <span
+            className='text-green-neon-100 text-2xl sm:text-3xl'
+            data-testid='password length'
+          >
             {passwordLength}
           </span>
         </div>
@@ -37,6 +40,7 @@ const RangeSlider = (props: Props) => {
             type='range'
             name='length slider'
             id='length-slider'
+            data-testid='length slider'
             className='w-full appearance-none h-2 bg-gray-dark cursor-pointer'
             value={passwordLength}
             min={10}
